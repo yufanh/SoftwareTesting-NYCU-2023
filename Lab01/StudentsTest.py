@@ -25,7 +25,12 @@ class Test(unittest.TestCase):
             name = self.students.get_name(self.user_id[i])
             self.assertEqual(name, self.user_name[i])
             print("id", self.user_id[i], ":", self.user_name[i])
-        name = self.students.get_name(len(self.user_id))
+            
+        mex_num = 0
+        while mex_num in self.user_id:
+            mex_num += 1
+        
+        name = self.students.get_name(mex_num)
         self.assertEqual(name, "There is no such user")
-        print("id", len(self.user_id), ":", self.students.get_name(len(self.user_id)))
+        print("id", mex_num, ":", name)
         print("\nFinish get_name test\n")
