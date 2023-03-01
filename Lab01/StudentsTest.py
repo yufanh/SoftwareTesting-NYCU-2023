@@ -15,7 +15,6 @@ class Test(unittest.TestCase):
             self.user_id.append(id)
             print(id , name)
         print("\nFinish set_name test")
-
         
     def test_1_get_name(self):
         print("\n\nStart get_name test\n")
