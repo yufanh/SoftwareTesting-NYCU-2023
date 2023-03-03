@@ -28,10 +28,6 @@ class ApplicationTest(unittest.TestCase):
         mock_get_random_person = Mock()
         mock_get_random_person.side_effect = self.name_list
         app.Application.get_random_person = mock_get_random_person
-        # print(self.myapp.get_random_person())
-        # print(self.myapp.get_random_person())
-        # print(self.myapp.get_random_person())
-        # print(self.myapp.get_random_person())
         selected = self.myapp.select_next_person()
         self.assertEqual(selected, "Liam")
         print(selected, "selected")
@@ -58,7 +54,6 @@ class ApplicationTest(unittest.TestCase):
 
         print("Finish test_app\n")
 
-        # print(mock_get_random_person.call_args_list)
         print(mock_write.call_args_list)
         print(mock_send.call_args_list)
 
