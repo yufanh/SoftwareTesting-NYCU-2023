@@ -4,7 +4,6 @@ from unittest.mock import Mock
 
 
 class ApplicationTest(unittest.TestCase):
-    myapp = app
     name_list = ["Willian", "Oilver", "Henry", "Liam"]
     selected_list = ["Willian", "Oilver", "Henry"]
 
