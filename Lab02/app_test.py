@@ -14,11 +14,13 @@ class ApplicationTest(unittest.TestCase):
         app.Application.get_names = mock_get_names
         self.myapp = app.Application()
 
+
     def test_app(self):
         # mock
         mock_get_random_person = Mock()
         mock_get_random_person.side_effect = self.name_list
         app.Application.get_random_person = mock_get_random_person
+        
         selected = self.myapp.select_next_person()
         self.assertEqual(selected, "Liam")
         print(selected, "selected")
@@ -41,12 +43,12 @@ class ApplicationTest(unittest.TestCase):
         app.MailSystem.send = mock_send
 
         self.myapp.notify_selected()
-        self.assertEqual(mock_write.call_count, len(self.name_list))
-        self.assertEqual(mock_send.call_count, len(self.name_list))
+        self.assertEqual(app.MailSystem.write.call_count, len(self.name_list))
+        self.assertEqual(app.MailSystem.send.call_count, len(self.name_list))
 
         print("\n")
-        print(mock_write.call_args_list)
-        print(mock_send.call_args_list)
+        print(app.MailSystem.write.call_args_list)
+        print(app.MailSystem.send.call_args_list)
 
 
 if __name__ == "__main__":
