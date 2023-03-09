@@ -4,6 +4,7 @@ from unittest.mock import Mock
 
 
 class ApplicationTest(unittest.TestCase):
+    # myapp = app
     name_list = ["Willian", "Oilver", "Henry", "Liam"]
     selected_list = ["Willian", "Oilver", "Henry"]
 
@@ -14,13 +15,12 @@ class ApplicationTest(unittest.TestCase):
         app.Application.get_names = mock_get_names
         self.myapp = app.Application()
 
-
     def test_app(self):
         # mock
         mock_get_random_person = Mock()
         mock_get_random_person.side_effect = self.name_list
         app.Application.get_random_person = mock_get_random_person
-        
+
         selected = self.myapp.select_next_person()
         self.assertEqual(selected, "Liam")
         print(selected, "selected")
