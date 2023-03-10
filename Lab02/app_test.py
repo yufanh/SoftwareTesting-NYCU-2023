@@ -6,7 +6,7 @@ from unittest.mock import Mock
 class ApplicationTest(unittest.TestCase):
     # myapp = app
     name_list = ["Willian", "Oliver", "Henry", "Liam"]
-    selected_list = ["Willian", "Oilver", "Henry"]
+    selected_list = ["Willian", "Oliver", "Henry"]
 
     def setUp(self):
         # stub
