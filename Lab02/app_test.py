@@ -26,20 +26,20 @@ class ApplicationTest(unittest.TestCase):
         print(selected, "selected")
 
         # spy
-        class fake_mail:
-            def fake_write(name):
-                context = 'Congrats, ' + name + '!'
-                return context
+        def fake_mail(name):
+            context = 'Congrats, ' + name + '!'
+            print(context)
+            return context
 
-            def fake_send(name, context):
-                print(context)
-
+        def fake_send(name, context):
+            # print(context)
+            pass
         mock_write = Mock()
-        mock_write.side_effect = fake_mail.fake_write
+        mock_write.side_effect = fake_mail
         app.MailSystem.write = mock_write
 
         mock_send = Mock()
-        mock_send.side_effect = fake_mail.fake_send
+        mock_send.side_effect = fake_send
         app.MailSystem.send = mock_send
 
         self.myapp.notify_selected()
