@@ -14,7 +14,7 @@ class ApplicationTest(unittest.TestCase):
 
     def test_add(self):
         for a, b, ans in self.add_list:
-            self.assertEqual(Calculator.add(a, b), ans)  #
+            self.assertEqual(Calculator.add(a, b), ans)
 
         with self.assertRaises(TypeError):
             Calculator.add(66, '6')
