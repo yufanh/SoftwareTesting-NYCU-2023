@@ -19,7 +19,6 @@ class ApplicationTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             Calculator.add(66, '6')
 
-
     def test_divide(self):
         for a, b, ans in self.divide_list:
             self.assertEqual(Calculator.divide(a, b), ans)
