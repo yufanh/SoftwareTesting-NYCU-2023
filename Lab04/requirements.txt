@@ -7,7 +7,6 @@ coverage==7.2.0
 cryptography==3.4.8
 dbus-python==1.2.18
 distro==1.7.0
-distro-info===1.1build1
 exceptiongroup==1.1.1
 flake8==6.0.0
 h11==0.14.0
