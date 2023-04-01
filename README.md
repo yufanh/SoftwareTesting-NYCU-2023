@@ -9,4 +9,6 @@
 
 ![Lab03 CI](https://github.com/yufanh/311552017-ST-2023/actions/workflows/Lab03-CI.yml/badge.svg)
 
-![Lab03 CI](https://github.com/yufanh/311552017-ST-2023/actions/workflows/Lab04-CI.yml/badge.svg)
+![Lab04 CI](https://github.com/yufanh/311552017-ST-2023/actions/workflows/Lab04-CI.yml/badge.svg)
+
+![Lab05 CI](https://github.com/yufanh/311552017-ST-2023/actions/workflows/Lab05-CI.yml/badge.svg)
