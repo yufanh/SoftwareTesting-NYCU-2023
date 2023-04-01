@@ -63,9 +63,8 @@ static FunctionCallee printfPrototype(Module &M) {
 
 bool LabPass::runOnModule(Module &M) {
   errs() << "runOnModule\n";
-  LLVMContext &ctx = M.getContext(); // 取得 Module 的 LLVM Context
+  LLVMContext &ctx = M.getContext();
   Type *intTy = Type::getInt32Ty(ctx);
-  // GlobalVariable *depthVar = M.getOrInsertGlobal("depthVar", intTy);
   GlobalVariable *depthVar = M.getGlobalVariable("depthVar");
   if (!depthVar) {
       depthVar = new GlobalVariable(M, intTy, false, GlobalValue::LinkageTypes::CommonLinkage, nullptr, "depthVar");
@@ -73,21 +72,20 @@ bool LabPass::runOnModule(Module &M) {
       // depthVar->setInitializer(Constant::getIntegerValue(Type::getInt32Ty(ctx), APInt(32, -1)));
   }
   errs() << *depthVar << "\n";
-  FunctionCallee printfCallee = printfPrototype(M); // 取得 printf 函式的 FunctionCallee
+  FunctionCallee printfCallee = printfPrototype(M);
   for (auto &F : M) {
-    if (F.empty()) { // 如果函式為空，則跳過
+    if (F.empty()) {
       continue;
     }
     
     errs() << F.getName() << "\n";
 
-
     Constant *space = getI8StrVal(M, " ", "space");
     Constant *one = Constant::getIntegerValue(Type::getInt32Ty(ctx), APInt(32, 1));
-    BasicBlock &Bstart = F.front(); // 取得函式的第一個 Basic Block
-    BasicBlock &Bend = F.back(); // 取得函式的最後一個 Basic Block
-    Instruction &ret = *(++Bend.rend()); // 取得最後一個指令，即 "ret" 指令
-    BasicBlock *Bret = Bend.splitBasicBlock(&ret, "ret"); // 把 "ret" 指令替換成一個新的 Basic Block，並將它命名為 "ret"
+    BasicBlock &Bstart = F.front();
+    BasicBlock &Bend = F.back();
+    Instruction &ret = *(++Bend.rend());
+    BasicBlock *Bret = Bend.splitBasicBlock(&ret, "ret");
 
     BasicBlock *Bdepth = BasicBlock::Create(ctx, "depth", &F, &Bstart);
     BasicBlock *Bspace = BasicBlock::Create(ctx, "space", &F, &Bstart);
@@ -107,10 +105,8 @@ bool LabPass::runOnModule(Module &M) {
     Value *noSpace = BuilderDepth.CreateICmpEQ(BuilderDepth.CreateLoad(Type::getInt32Ty(ctx), depth), one);
     BuilderDepth.CreateCondBr(noSpace, Bshow, Bspace);
 
-
     
     IRBuilder<> BuilderSpace(Bspace);
-    // Value *i = BuilderSpace.CreateLoad(Type::getInt32Ty(ctx), cnt);
     BuilderSpace.CreateCall(printfCallee, {space});
     Value *cntPlus = BuilderSpace.CreateAdd(BuilderSpace.CreateLoad(Type::getInt32Ty(ctx), cnt), one);
     BuilderSpace.CreateStore(cntPlus, cnt);
@@ -124,12 +120,9 @@ bool LabPass::runOnModule(Module &M) {
     Constant *formatString = ConstantDataArray::getString(ctx, "%s: %p\n");
     GlobalVariable *formatStringVar = new GlobalVariable(M, formatString->getType(), true, GlobalValue::InternalLinkage, formatString, "formatString");
     
-    errs() << funcName << " " << funcPtr << "\n";
+    // errs() << funcName << " " << funcPtr << "\n";
     std::vector<Value *> printfArgs = {formatStringVar, funcName, funcPtr};
     BuilderShow.CreateCall(printfCallee, printfArgs);
-    // Value *i2 = BuilderShow.CreateLoad(depth->getValueType(), depth);
-    // Value *i3 = BuilderShow.CreateSub(i2, one);
-    // BuilderShow.CreateStore(i3, depth);
     BuilderShow.CreateBr(&Bstart);
 
     BasicBlock &Bfinal = F.back(); 
@@ -138,24 +131,8 @@ bool LabPass::runOnModule(Module &M) {
     Value *i2 = BuilderSub.CreateLoad(depth->getValueType(), depth);
     Value *i3 = BuilderSub.CreateSub(i2, one);
     BuilderSub.CreateStore(i3, depth);
-    // IRBuilder<> BuilderSub(Bsub);
-    // Value *i2 = BuilderSub.CreateLoad(depth->getValueType(), depth);
-    // Value *i3 = BuilderSub.CreateSub(i3, one);
-    // BuilderSub.CreateStore(i3, depth);
-    // BuilderSub.CreateBr(&Bstart);
 
     dumpIR(F);
-
-    // Value *depthVal = BuilderShow.CreateLoad(depthVar);
-    // depthVal = BuilderShow.CreateAdd(depthVal, ConstantInt::get(intTy, 1));
-    // BuilderShow.CreateStore(depthVal, depthVar);
-    // formatStringVar->setUnnamedAddr(GlobalValue::UnnamedAddr::Global);
-
-    
-    // BuilderShow.CreateCall(printfCallee, { function });
-    // BuilderShow.CreateCall(printfCallee, { newLine });
-    // Value *funcPtr = &F;
-    // std::string funcName = F.getName().str();
   }
 
   return true;
