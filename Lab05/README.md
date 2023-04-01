@@ -15,3 +15,4 @@ The output of the solution should resemble the following image:
 ![](https://i.imgur.com/cimRbvy.png)
 
 (Note that due to ASLR and PIE, the addresses of the functions will be different in each execution, but the offset will remain the same.)
+
