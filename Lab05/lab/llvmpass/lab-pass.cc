@@ -63,13 +63,13 @@ static FunctionCallee printfPrototype(Module &M) {
 
 bool LabPass::runOnModule(Module &M) {
   errs() << "runOnModule\n";
+  
   LLVMContext &ctx = M.getContext();
-  Type *intTy = Type::getInt32Ty(ctx);
-  // GlobalVariable *depthVar = M.getOrInsertGlobal("depthVar", intTy);
-  GlobalVariable *depthVar = M.getGlobalVariable("depthVar");
-  depthVar = new GlobalVariable(M, intTy, false, GlobalValue::LinkageTypes::CommonLinkage, nullptr, "depthVar");
-  depthVar->setInitializer(ConstantInt::get(intTy, 0));
   FunctionCallee printfCallee = printfPrototype(M);
+  
+  GlobalVariable *depthVar = M.getGlobalVariable("depthVar");
+  depthVar = new GlobalVariable(M, Type::getInt32Ty(ctx), false, GlobalValue::LinkageTypes::CommonLinkage, nullptr, "depthVar");
+  depthVar->setInitializer(ConstantInt::get(Type::getInt32Ty(ctx), 0));
   
   for (auto &F : M) {
     if (F.empty()) {
