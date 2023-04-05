@@ -65,23 +65,20 @@ bool LabPass::runOnModule(Module &M) {
   errs() << "runOnModule\n";
   LLVMContext &ctx = M.getContext();
   Type *intTy = Type::getInt32Ty(ctx);
+  // GlobalVariable *depthVar = M.getOrInsertGlobal("depthVar", intTy);
   GlobalVariable *depthVar = M.getGlobalVariable("depthVar");
-  if (!depthVar) {
-      depthVar = new GlobalVariable(M, intTy, false, GlobalValue::LinkageTypes::CommonLinkage, nullptr, "depthVar");
-      depthVar->setInitializer(ConstantInt::get(intTy, 0));
-      // depthVar->setInitializer(Constant::getIntegerValue(Type::getInt32Ty(ctx), APInt(32, -1)));
-  }
-  errs() << *depthVar << "\n";
+  depthVar = new GlobalVariable(M, intTy, false, GlobalValue::LinkageTypes::CommonLinkage, nullptr, "depthVar");
+  depthVar->setInitializer(ConstantInt::get(intTy, 0));
   FunctionCallee printfCallee = printfPrototype(M);
+  
   for (auto &F : M) {
     if (F.empty()) {
       continue;
-    }
+    }  
     
-    errs() << F.getName() << "\n";
-
     Constant *space = getI8StrVal(M, " ", "space");
     Constant *one = Constant::getIntegerValue(Type::getInt32Ty(ctx), APInt(32, 1));
+    
     BasicBlock &Bstart = F.front();
     BasicBlock &Bend = F.back();
     Instruction &ret = *(++Bend.rend());
@@ -90,20 +87,24 @@ bool LabPass::runOnModule(Module &M) {
     BasicBlock *Bdepth = BasicBlock::Create(ctx, "depth", &F, &Bstart);
     BasicBlock *Bspace = BasicBlock::Create(ctx, "space", &F, &Bstart);
     BasicBlock *Bshow = BasicBlock::Create(ctx, "show", &F, &Bstart);
-    // BasicBlock *Bsub = BasicBlock::Create(ctx, "sub", &F, &Bstart);
     
     GlobalVariable *depth = M.getNamedGlobal("depthVar");
 
+    
     IRBuilder<> BuilderDepth(Bdepth);
-    Value *i0 = BuilderDepth.CreateLoad(depth->getValueType(), depth);
-    Value *i1 = BuilderDepth.CreateAdd(i0, one);
-    BuilderDepth.CreateStore(i1, depth);
+    if(F.getName() != "main"){
+      Value *i0 = BuilderDepth.CreateLoad(depth->getValueType(), depth);
+      Value *i1 = BuilderDepth.CreateAdd(i0, one);
+      BuilderDepth.CreateStore(i1, depth);
+    }
+    
 
     Value *cnt = BuilderDepth.CreateAlloca(Type::getInt32Ty(ctx));
-    BuilderDepth.CreateStore(ConstantInt::get(Type::getInt32Ty(ctx), 1), cnt);
+    BuilderDepth.CreateStore(ConstantInt::get(Type::getInt32Ty(ctx), 0), cnt);
 
-    Value *noSpace = BuilderDepth.CreateICmpEQ(BuilderDepth.CreateLoad(Type::getInt32Ty(ctx), depth), one);
+    Value *noSpace = BuilderDepth.CreateICmpEQ(BuilderDepth.CreateLoad(Type::getInt32Ty(ctx), depth), Constant::getIntegerValue(Type::getInt32Ty(ctx), APInt(32, 0)));
     BuilderDepth.CreateCondBr(noSpace, Bshow, Bspace);
+
 
     
     IRBuilder<> BuilderSpace(Bspace);
@@ -120,7 +121,7 @@ bool LabPass::runOnModule(Module &M) {
     Constant *formatString = ConstantDataArray::getString(ctx, "%s: %p\n");
     GlobalVariable *formatStringVar = new GlobalVariable(M, formatString->getType(), true, GlobalValue::InternalLinkage, formatString, "formatString");
     
-    // errs() << funcName << " " << funcPtr << "\n";
+    errs() << funcName << " " << funcPtr << "\n";
     std::vector<Value *> printfArgs = {formatStringVar, funcName, funcPtr};
     BuilderShow.CreateCall(printfCallee, printfArgs);
     BuilderShow.CreateBr(&Bstart);
@@ -131,8 +132,9 @@ bool LabPass::runOnModule(Module &M) {
     Value *i2 = BuilderSub.CreateLoad(depth->getValueType(), depth);
     Value *i3 = BuilderSub.CreateSub(i2, one);
     BuilderSub.CreateStore(i3, depth);
-
-    dumpIR(F);
+    
+    // dumpIR(F);
+    
   }
 
   return true;
