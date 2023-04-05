@@ -121,7 +121,6 @@ bool LabPass::runOnModule(Module &M) {
     Constant *formatString = ConstantDataArray::getString(ctx, "%s: %p\n");
     GlobalVariable *formatStringVar = new GlobalVariable(M, formatString->getType(), true, GlobalValue::InternalLinkage, formatString, "formatString");
     
-    errs() << funcName << " " << funcPtr << "\n";
     std::vector<Value *> printfArgs = {formatStringVar, funcName, funcPtr};
     BuilderShow.CreateCall(printfCallee, printfArgs);
     BuilderShow.CreateBr(&Bstart);
