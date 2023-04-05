@@ -67,9 +67,9 @@ bool LabPass::runOnModule(Module &M) {
   LLVMContext &ctx = M.getContext();
   FunctionCallee printfCallee = printfPrototype(M);
   
-  GlobalVariable *depthVar = M.getGlobalVariable("depthVar");
-  depthVar = new GlobalVariable(M, Type::getInt32Ty(ctx), false, GlobalValue::LinkageTypes::CommonLinkage, nullptr, "depthVar");
-  depthVar->setInitializer(ConstantInt::get(Type::getInt32Ty(ctx), 0));
+  GlobalVariable *DEPTH_GLOBAL = M.getGlobalVariable("DEPTH_GLOBAL");
+  DEPTH_GLOBAL = new GlobalVariable(M, Type::getInt32Ty(ctx), false, GlobalValue::LinkageTypes::CommonLinkage, nullptr, "DEPTH_GLOBAL");
+  DEPTH_GLOBAL->setInitializer(ConstantInt::get(Type::getInt32Ty(ctx), 0));
   
   for (auto &F : M) {
     if (F.empty()) {
@@ -88,7 +88,7 @@ bool LabPass::runOnModule(Module &M) {
     BasicBlock *Bspace = BasicBlock::Create(ctx, "space", &F, &Bstart);
     BasicBlock *Bshow = BasicBlock::Create(ctx, "show", &F, &Bstart);
     
-    GlobalVariable *depth = M.getNamedGlobal("depthVar");
+    GlobalVariable *depth = M.getNamedGlobal("DEPTH_GLOBAL");
 
     
     IRBuilder<> BuilderDepth(Bdepth);
