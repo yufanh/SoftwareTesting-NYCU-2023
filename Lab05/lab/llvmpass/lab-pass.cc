@@ -93,9 +93,9 @@ bool LabPass::runOnModule(Module &M) {
     
     IRBuilder<> BuilderDepth(Bdepth);
     if(F.getName() != "main"){
-      Value *i0 = BuilderDepth.CreateLoad(depth->getValueType(), depth);
-      Value *i1 = BuilderDepth.CreateAdd(i0, one);
-      BuilderDepth.CreateStore(i1, depth);
+      Value *depth_load = BuilderDepth.CreateLoad(depth->getValueType(), depth);
+      Value *depth_load_add = BuilderDepth.CreateAdd(depth_load, one);
+      BuilderDepth.CreateStore(depth_load_add, depth);
     }
     
 
@@ -129,9 +129,9 @@ bool LabPass::runOnModule(Module &M) {
     BasicBlock &Bfinal = F.back(); 
     Instruction &final_ret = *(++Bfinal.rend());
     IRBuilder<> BuilderSub(&final_ret);
-    Value *i2 = BuilderSub.CreateLoad(depth->getValueType(), depth);
-    Value *i3 = BuilderSub.CreateSub(i2, one);
-    BuilderSub.CreateStore(i3, depth);
+    Value *depth_laod_2 = BuilderSub.CreateLoad(depth->getValueType(), depth);
+    Value *depth_laod_sub = BuilderSub.CreateSub(depth_laod_2, one);
+    BuilderSub.CreateStore(depth_laod_sub, depth);
     
     // dumpIR(F);
     
