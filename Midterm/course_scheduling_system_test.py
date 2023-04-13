@@ -14,7 +14,7 @@ class CSSTest(unittest.TestCase):
         self.myCSS = course_scheduling_system.CSS()
 
     def test_q1_1(self):
-        print("\n------test_q1_1------")
+        # print("\n------test_q1_1------")
         # course_ST = ("SoftwareTesting", "Thursday", 5, 6)
         mock_check_course_exist = Mock()
         mock_check_course_exist.return_value = True
@@ -28,7 +28,7 @@ class CSSTest(unittest.TestCase):
         # print(self.myCSS.get_course_list())
 
     def test_q1_2(self):
-        print("\n------test_q1_2------")
+        # print("\n------test_q1_2------")
         # course_ST = ("SoftwareTesting", "Thursday", 5, 6)
         # course_fake = ("FakeCourse", "Thursday", 5, 6)
         mock_check_course_exist = Mock()
@@ -44,7 +44,7 @@ class CSSTest(unittest.TestCase):
         # print(self.myCSS.get_course_list())
 
     def test_q1_3(self):
-        print("\n------test_q1_3------")
+        # print("\n------test_q1_3------")
         mock_check_course_exist = Mock()
         mock_check_course_exist.return_value = False
         course_scheduling_system.CSS.check_course_exist = mock_check_course_exist
@@ -55,7 +55,7 @@ class CSSTest(unittest.TestCase):
 
     def test_q1_4(self):
        
-        print("\n------test_q1_4------")
+        # print("\n------test_q1_4------")
         with self.subTest():
             with self.assertRaises(TypeError):
                 self.myCSS.add_course("INVALID COURSE")
@@ -63,7 +63,7 @@ class CSSTest(unittest.TestCase):
 
 
     def test_q1_5(self):
-        print("\n------test_q1_5------")
+        # print("\n------test_q1_5------")
         mock_check_course_exist = Mock()
         mock_check_course_exist.return_value = True
         course_scheduling_system.CSS.check_course_exist = mock_check_course_exist
