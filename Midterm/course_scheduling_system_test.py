@@ -1,118 +1,48 @@
-import unittest
-import course_scheduling_system
-from unittest.mock import Mock
+from selenium import webdriver
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import StaleElementReferenceException
+import time
 
+if __name__ == '__main__':
+    options = Options()
+    options.add_argument('--headless')
+    options.add_argument('--window-size=1920,1080')
+    options.add_argument('--disable-gpu')
+    driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options = options)
+    # driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+    driver.maximize_window()
+    driver.get('https://docs.python.org/3/tutorial/index.html')
+    wait = WebDriverWait(driver, 10)
+    select = Select(wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[2]//*[@id="language_select"]'))))
+    select.select_by_value("zh-tw")
 
-class CSSTest(unittest.TestCase):
-    course_ST = ("SoftwareTesting", "Thursday", 5, 6)
-    course_OSDI = ("OSDI", "Wednesday", 1, 2)    
-    course_ICLAB = ("ICLAB", "Wednesday", 3, 4)
+    while True:
+        try:
+            select.first_selected_option
+        except StaleElementReferenceException:
+            break
 
-    course_fake = ("FakeCourse", "Thursday", 5, 6)
+    myTitle = wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[3]//h1')))
+    cont = wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[3]//p')))
+    print(myTitle.text)
+    print(cont.text)
 
-    def setUp(self):
-        self.myCSS = course_scheduling_system.CSS()
-
-    def test_q1_1(self):
-        # print("\n------test_q1_1------")
-        # course_ST = ("SoftwareTesting", "Thursday", 5, 6)
-        mock_check_course_exist = Mock()
-        mock_check_course_exist.return_value = True
-        course_scheduling_system.CSS.check_course_exist = mock_check_course_exist
-        # self.myCSS.add_course(self.course_ST)
-        # ret_course_list = self.myCSS.get_course_list() 
-        with self.subTest():
-            self.assertEqual(self.myCSS.add_course(self.course_ST), True)
-        with self.subTest():
-            self.assertIn(self.course_ST, self.myCSS.get_course_list())
-        # print(self.myCSS.get_course_list())
-
-    def test_q1_2(self):
-        # print("\n------test_q1_2------")
-        # course_ST = ("SoftwareTesting", "Thursday", 5, 6)
-        # course_fake = ("FakeCourse", "Thursday", 5, 6)
-        mock_check_course_exist = Mock()
-        mock_check_course_exist.return_value = True
-        course_scheduling_system.CSS.check_course_exist = mock_check_course_exist
-        with self.subTest():
-            self.assertEqual(self.myCSS.add_course(self.course_ST), True)
-            self.assertEqual(self.myCSS.add_course(self.course_fake), False)
-        # self.myCSS.add_course(self.course_ST)
-        # self.myCSS.add_course(self.course_fake)
-        with self.subTest():
-            self.assertNotIn(self.course_fake, self.myCSS.get_course_list())
-        # print(self.myCSS.get_course_list())
-
-    def test_q1_3(self):
-        # print("\n------test_q1_3------")
-        mock_check_course_exist = Mock()
-        mock_check_course_exist.return_value = False
-        course_scheduling_system.CSS.check_course_exist = mock_check_course_exist
-        # self.myCSS.add_course(self.course_ST)
-        with self.subTest():
-            self.assertEqual(self.myCSS.add_course(self.course_ST), False)
-        # print(self.myCSS.add_course(self.course_ST))
-
-    def test_q1_4(self):
-       
-        # print("\n------test_q1_4------")
-        with self.subTest():
-            with self.assertRaises(TypeError):
-                self.myCSS.add_course("INVALID COURSE")
-
-
-
-    def test_q1_5(self):
-        # print("\n------test_q1_5------")
-        mock_check_course_exist = Mock()
-        mock_check_course_exist.return_value = True
-        course_scheduling_system.CSS.check_course_exist = mock_check_course_exist
-
-        with self.subTest():
-            self.assertEqual(self.myCSS.add_course(self.course_ST), True)
-            self.assertEqual(self.myCSS.add_course(self.course_OSDI), True)
-            self.assertEqual(self.myCSS.add_course(self.course_ICLAB), True)
-            self.assertEqual(self.myCSS.remove_course(self.course_OSDI), True)
-            self.assertNotIn(self.course_OSDI, self.myCSS.get_course_list())
-            self.assertEqual(course_scheduling_system.CSS.check_course_exist.call_count, 4)
-        print(self.myCSS)
-        # self.myCSS.add_course(self.course_ST)
-        # self.myCSS.add_course(self.course_ICLAB)
-        # self.myCSS.add_course(self.course_OSDI)
-        
-        # self.myCSS.remove_course(self.course_ICLAB)
-        
-        # print(self.myCSS.get_course_list())
-        # course_scheduling_system.CSS.check_course_exist.call_count()
-        # print(course_scheduling_system.CSS.check_course_exist.call_count)
-
-
-    def test_q1_6(self):
-        print("\n------test_q1_6------")
-        course_fake_1 = (88888, "Thursday", 5, 6)
-        course_fake_2 = ("fake", "Sunday", 5, 6)
-        course_fake_3 = ("fake", "Thursday", '5', 6)
-        
-        with self.subTest():
-            with self.assertRaises(TypeError):
-                self.myCSS.add_course(course_fake_1)
-            with self.assertRaises(TypeError):
-                self.myCSS.add_course(course_fake_2)
-            with self.assertRaises(TypeError):
-                self.myCSS.add_course(course_fake_3)
-
-        mock_check_course_exist = Mock()
-        mock_check_course_exist.return_value = False
-        course_scheduling_system.CSS.check_course_exist = mock_check_course_exist
-        with self.subTest():
-            self.assertEqual(self.myCSS.remove_course(self.course_ST), False)
-
-        mock_check_course_exist = Mock()
-        mock_check_course_exist.return_value = True
-        course_scheduling_system.CSS.check_course_exist = mock_check_course_exist
-        # self.myCSS.add_course(self.course_ST)
-        self.myCSS.remove_course(self.course_ST)
-        with self.subTest():
-            self.assertEqual(self.myCSS.remove_course(self.course_ST), False)
-        # self.myCSS.remove_course(self.course_ST)
-
+    wait.until(EC.presence_of_element_located((By.XPATH,'/html/body/div[2]/ul/li[11]/div/form/input[1]'))).send_keys("class" + Keys.RETURN)
+    myText = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="search-results"]/ul/li[1]/a')))
+    print(myText.text)
+    myText = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="search-results"]/ul/li[2]/a')))
+    print(myText.text)
+    myText = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="search-results"]/ul/li[3]/a')))
+    print(myText.text)
+    myText = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="search-results"]/ul/li[4]/a')))
+    print(myText.text)
+    myText = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="search-results"]/ul/li[5]/a')))
+    print(myText.text)
+    driver.close()
