@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium import webdriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.support.wait import WebDriverWait
@@ -25,7 +26,7 @@ if __name__ == '__main__':
 
     while True:
         try:
-            print(selected_option = select.first_selected_option)
+            select.first_selected_option
         except StaleElementReferenceException:
             break
 
@@ -33,3 +34,16 @@ if __name__ == '__main__':
     cont = wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[3]//p')))
     print(myTitle.text)
     print(cont.text)
+
+    wait.until(EC.presence_of_element_located((By.XPATH,'/html/body/div[2]/ul/li[11]/div/form/input[1]'))).send_keys("class" + Keys.RETURN)
+    myText = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="search-results"]/ul/li[1]/a')))
+    print(myText.text)
+    myText = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="search-results"]/ul/li[2]/a')))
+    print(myText.text)
+    myText = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="search-results"]/ul/li[3]/a')))
+    print(myText.text)
+    myText = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="search-results"]/ul/li[4]/a')))
+    print(myText.text)
+    myText = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="search-results"]/ul/li[5]/a')))
+    print(myText.text)
+    driver.close()
