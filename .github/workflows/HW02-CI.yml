@@ -23,4 +23,4 @@ jobs:
     - name: Test with unittest 
       run: |
         cd HW02
-        python3 -m unittest -v StudentBoundedQueue_test.py
+        python3 -m unittest -v BoundedQueue_test.py
