@@ -531,7 +531,7 @@ int main(int argc, char** argv){
 ```
 ### ASan report
 > You need to run the test with ASAN_OPTIONS=detect_stack_use_after_return=1
-> [AddressSanitizerExampleUseAfterReturn](https://github.com/google/sanitizers/wiki/AddressSanitizerExampleUseAfterReturn)(official github)
+> [[AddressSanitizerExampleUseAfterReturn](https://github.com/google/sanitizers/wiki/AddressSanitizerExampleUseAfterReturn)](official github)
 ```
 $ gcc -fsanitize=address -O1 -g -o return_test use-after-return.c
 $ ASAN_OPTIONS=detect_stack_use_after_return=1 ./return_test
