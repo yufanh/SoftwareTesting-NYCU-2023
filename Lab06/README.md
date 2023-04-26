@@ -586,7 +586,7 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   Shadow gap:              cc
 ==6151==ABORTING
 ```
-### algrind report
+### valgrind report
 ```
 $ gcc -o return_test use-after-return.c
 $ valgrind ./return_test
