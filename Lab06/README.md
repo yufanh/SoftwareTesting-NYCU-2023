@@ -149,9 +149,8 @@ arr[3]: 4  (Heap out of bounds !)
 ==4478== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
 
 ```
-:::info
 **ASan 能, valgrind 能**
-:::
+
 
 
 ## 1-2 Stack out-of-bounds read/write
@@ -287,9 +286,7 @@ arr[3]: 4  (Stack out of bounds !)
 [1]    4252 IOT instruction  valgrind ./stack_test
 
 ```
-:::info
 **ASan 能, valgrind 不能**
-:::
 
 ## 1-3 Global out-of-bounds read/write
 ### global-out-of-bounds.c
@@ -399,9 +396,9 @@ ARRAY[3]: 4  (Global out of bounds !)
 ==4341== For lists of detected and suppressed errors, rerun with: -s
 ==4341== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
-:::info
+
 **ASan 能, valgrind 不能**
-:::
+
 
 ## 1-4 Use-after-free
 ### use-after-free.c
@@ -506,9 +503,9 @@ use after free: 1234567890
 ==5522== For lists of detected and suppressed errors, rerun with: -s
 ==5522== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
 ```
-:::info
+
 **ASan 能, valgrind 能**
-:::
+
 
 
 ## 1-5 Use-after-return
@@ -631,9 +628,9 @@ use after return: 987654321
 ==6185== For lists of detected and suppressed errors, rerun with: -s
 ==6185== ERROR SUMMARY: 20 errors from 4 contexts (suppressed: 0 from 0)
 ```
-:::info
+
 **ASan 能, valgrind 能**
-:::
+
 
 
 ## 2 Stack buffer overflow 剛好越過 redzone
@@ -665,6 +662,5 @@ $ ./redzone_test
 stack buffer overflow redzone: 123456789
 ```
 
-:::info
 **ASan 不能**
-:::
+
