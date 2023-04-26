@@ -2,8 +2,8 @@ NYCU-Software-Testing-2023 Lab06
 ===
 
 ### Environment
-* Ubuntu: Ubuntu22.04(WSL2)
-    * 5.15.90.1-microsoft-standard-WSL2
+* Ubuntu:
+    * 5.15.90.1-microsoft-standard-WSL2 (Ubuntu22.04)
 * gcc:
     * gcc version 11.3.0 (Ubuntu 11.3.0-1ubuntu1~22.04)
 * valgrind:
