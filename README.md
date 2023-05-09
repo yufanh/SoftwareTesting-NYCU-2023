@@ -16,3 +16,5 @@
 ![Lab05 CI](https://github.com/yufanh/311552017-ST-2023/actions/workflows/Lab05-CI.yml/badge.svg)
 
 ![Midterm CI](https://github.com/yufanh/311552017-ST-2023/actions/workflows/Midterm-CI.yml/badge.svg)
+
+![Lab08 CI](https://github.com/yufanh/311552017-ST-2023/actions/workflows/Lab08-CI.yml/badge.svg)
