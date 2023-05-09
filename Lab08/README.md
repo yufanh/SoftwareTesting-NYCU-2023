@@ -7,4 +7,3 @@ Write a Python script using angr to obtain a solution that can solve the `lab/sr
 
 You can only modify the files listed below:
 * lab/solve.py
-
