@@ -1,5 +1,4 @@
-# 311552017-ST-2023
-311552017 黃宇梵
+# ST-2023
 
 ![example workflow](https://github.com/yufanh/311552017-ST-2023/actions/workflows/github-actions-demo.yml/badge.svg)
 
